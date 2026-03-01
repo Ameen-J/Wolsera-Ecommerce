@@ -18,7 +18,8 @@ import com.wolsera.wolsera_ecommerce.catalog.repository.ProductImageRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -63,10 +64,10 @@ public class AdminProductService {
         product.setVariants(variants);
 
         // Images
-        List<ProductImage> images = dto.getImages().stream()
+        Set<ProductImage> images = dto.getImages().stream()
                 .map(ProductMapper::toImageEntity)
                 .peek(img -> img.setProduct(product))
-                .toList();
+                .collect(Collectors.toSet());
 
         product.setImages(images);
 
@@ -86,14 +87,16 @@ public class AdminProductService {
         return ProductMapper.toResponse(productRepository.save(product));
     }
 
-    public void deactivateProduct(Long productId) {
+    public ProductResponseDTO deactivateProduct(Long productId) {
         Product product = getProduct(productId);
         product.setActive(false);
+        return ProductMapper.toResponse(productRepository.save(product));
     }
 
-    public void activateProduct(Long productId) {
+    public ProductResponseDTO activateProduct(Long productId) {
         Product product = getProduct(productId);
         product.setActive(true);
+        return ProductMapper.toResponse(productRepository.save(product));
     }
 
     // ================= VARIANT =================
@@ -127,9 +130,24 @@ public class AdminProductService {
         variant.setStockQuantity(dto.getStockQuantity());
         variant.setSku(dto.getSku());
 
+        refreshProductActiveStatus(
+                variant.getProduct().getId()
+        );
+
         return ProductMapper.toVariantResponse(
                 variantRepository.save(variant)
-        );
+         );
+    }
+    @Transactional
+    public void refreshProductActiveStatus(Long productId) {
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        boolean hasStock = variantRepository
+                .existsByProductIdAndStockQuantityGreaterThan(productId, 0);
+
+        product.setActive(hasStock);
     }
 
     public void deleteVariant(Long variantId) {

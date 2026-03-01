@@ -1,6 +1,7 @@
 package com.wolsera.wolsera_ecommerce.cart.model;
 import java.util.*;
 import jakarta.persistence.*;
+import com.wolsera.wolsera_ecommerce.auth.entity.User;
 
 @Entity
 public class Cart {

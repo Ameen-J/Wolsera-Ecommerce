@@ -1,5 +1,7 @@
 package com.wolsera.wolsera_ecommerce.cart.service;
 
+import com.wolsera.wolsera_ecommerce.auth.repository.UserRepository;
+import com.wolsera.wolsera_ecommerce.auth.entity.User;
 import com.wolsera.wolsera_ecommerce.cart.dto.AddToCartRequestDTO;
 import com.wolsera.wolsera_ecommerce.cart.dto.CartItemResponseDTO;
 import com.wolsera.wolsera_ecommerce.cart.dto.CartResponseDTO;
@@ -190,7 +192,9 @@ public class CartService {
     private User getLoggedInUser() {
         Authentication authentication =
                 SecurityContextHolder.getContext().getAuthentication();
-
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("User not authenticated");
+        }
         String email = authentication.getName();
 
         return userRepository.findByEmail(email)

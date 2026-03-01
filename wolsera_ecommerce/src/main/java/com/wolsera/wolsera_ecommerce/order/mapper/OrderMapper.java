@@ -37,7 +37,6 @@ public class OrderMapper {
                 order.getStatus(),
                 order.getTotalAmount(),
                 order.getCreatedAt(),
-                order.getCreatedAt(),
                 items
         );
     }

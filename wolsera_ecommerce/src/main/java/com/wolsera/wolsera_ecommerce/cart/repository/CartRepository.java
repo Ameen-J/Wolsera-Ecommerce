@@ -2,6 +2,7 @@ package com.wolsera.wolsera_ecommerce.cart.repository;
 
 import com.wolsera.wolsera_ecommerce.cart.model.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;
+import com.wolsera.wolsera_ecommerce.auth.entity.User;
 
 import java.util.Optional;
 

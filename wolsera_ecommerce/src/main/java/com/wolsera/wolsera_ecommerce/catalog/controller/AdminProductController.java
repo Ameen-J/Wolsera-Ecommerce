@@ -35,13 +35,13 @@ public class AdminProductController {
     }
 
     @PatchMapping("/{productId}/activate")
-    public void activateProduct(@PathVariable Long productId) {
-        adminProductService.activateProduct(productId);
+    public ProductResponseDTO activateProduct(@PathVariable Long productId) {
+        return adminProductService.activateProduct(productId);
     }
 
     @PatchMapping("/{productId}/deactivate")
-    public void deactivateProduct(@PathVariable Long productId) {
-        adminProductService.deactivateProduct(productId);
+    public ProductResponseDTO deactivateProduct(@PathVariable Long productId) {
+        return adminProductService.deactivateProduct(productId);
     }
 
     // ---------------- VARIANTS ----------------
@@ -51,6 +51,14 @@ public class AdminProductController {
             @RequestBody ProductVariantRequestDTO dto
     ) {
         return adminProductService.addVariant(productId, dto);
+    }
+
+    @PutMapping("/variants/{variantId}")
+    public ProductVariantResponseDTO updateVariant(
+            @PathVariable Long variantId,
+            @RequestBody ProductVariantRequestDTO dto
+    ){
+        return adminProductService.updateVariant(variantId, dto);
     }
 
     @DeleteMapping("/variants/{variantId}")

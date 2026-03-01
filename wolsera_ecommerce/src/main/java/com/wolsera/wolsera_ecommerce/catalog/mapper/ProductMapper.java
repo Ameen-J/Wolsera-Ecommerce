@@ -17,6 +17,7 @@ public class ProductMapper {
         product.setDescription(dto.getDescription());
         product.setGender(dto.getGender());
         product.setColour(dto.getColour());
+        product.setActive(dto.isActive());
         // Categories, variants, and images handled in service layer
         return product;
     }
@@ -47,6 +48,7 @@ public class ProductMapper {
         response.setDescription(product.getDescription());
         response.setGender(product.getGender());
         response.setColour(product.getColour());
+        response.setActive(product.isActive());
 
         // Categories
         response.setCategories(

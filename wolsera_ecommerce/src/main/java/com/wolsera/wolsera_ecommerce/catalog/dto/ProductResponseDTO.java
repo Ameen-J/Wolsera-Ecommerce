@@ -40,5 +40,5 @@ public class ProductResponseDTO {
     public void setImages(List<ProductImageResponseDTO> images) { this.images = images; }
 
     public boolean isActive() { return isActive; }
-    public void setIsActive(boolean isActive) { this.isActive = isActive; }
+    public void setActive(boolean isActive) { this.isActive = isActive; }
 }

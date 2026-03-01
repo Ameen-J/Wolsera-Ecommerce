@@ -13,8 +13,8 @@ import com.wolsera.wolsera_ecommerce.order.mapper.OrderMapper;
 import com.wolsera.wolsera_ecommerce.order.repository.OrderRepository;
 import com.wolsera.wolsera_ecommerce.order.repository.OrderItemRepository;
 import com.wolsera.wolsera_ecommerce.catalog.repository.ProductVariantRepository;
-import com.wolsera.wolsera_ecommerce.user.model.User;
-import com.wolsera.wolsera_ecommerce.user.repository.UserRepository;
+import com.wolsera.wolsera_ecommerce.auth.entity.User;
+import com.wolsera.wolsera_ecommerce.auth.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

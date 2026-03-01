@@ -1,5 +1,6 @@
 package com.wolsera.wolsera_ecommerce.order.model;
 
+import com.wolsera.wolsera_ecommerce.auth.entity.User;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

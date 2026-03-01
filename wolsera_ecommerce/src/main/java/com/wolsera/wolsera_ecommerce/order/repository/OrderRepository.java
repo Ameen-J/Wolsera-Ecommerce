@@ -1,7 +1,7 @@
 package com.wolsera.wolsera_ecommerce.order.repository;
 
 import com.wolsera.wolsera_ecommerce.order.model.Order;
-import com.wolsera.wolsera_ecommerce.user.model.User;
+import com.wolsera.wolsera_ecommerce.auth.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

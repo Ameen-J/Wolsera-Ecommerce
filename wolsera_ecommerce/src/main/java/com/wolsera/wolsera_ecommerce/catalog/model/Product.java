@@ -32,7 +32,7 @@ public class Product {
     private List<ProductVariant> variants;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch =  FetchType.LAZY)
-    private List<ProductImage> images;
+    private Set <ProductImage> images;
 
     private boolean isActive = true;
 
@@ -66,8 +66,8 @@ public class Product {
     public List<ProductVariant> getVariants() { return variants; }
     public void setVariants(List<ProductVariant> variants) { this.variants = variants; }
 
-    public List<ProductImage> getImages() { return images; }
-    public void setImages(List<ProductImage> images) { this.images = images; }
+    public Set<ProductImage> getImages() { return images; }
+    public void setImages(Set<ProductImage> images) { this.images = images; }
 
     public boolean isActive() { return isActive; }
     public void setActive(boolean active) { isActive = active; }

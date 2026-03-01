@@ -72,7 +72,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     );
 
     @Query("""
-        SELECT new com.wolsera.wolsera_ecommerce.catalog.dto.ProductListDTO(
+        SELECT DISTINCT new com.wolsera.wolsera_ecommerce.catalog.dto.ProductListDTO(
             p.id,
             p.name,
             (
