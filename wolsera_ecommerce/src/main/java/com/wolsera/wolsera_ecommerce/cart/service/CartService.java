@@ -9,6 +9,8 @@ import com.wolsera.wolsera_ecommerce.cart.model.Cart;
 import com.wolsera.wolsera_ecommerce.cart.model.CartItem;
 import com.wolsera.wolsera_ecommerce.cart.repository.CartItemRepository;
 import com.wolsera.wolsera_ecommerce.cart.repository.CartRepository;
+import com.wolsera.wolsera_ecommerce.catalog.model.Product;
+import com.wolsera.wolsera_ecommerce.catalog.model.ProductImage;
 import com.wolsera.wolsera_ecommerce.catalog.model.ProductVariant;
 import com.wolsera.wolsera_ecommerce.catalog.repository.ProductVariantRepository;
 import org.springframework.security.core.Authentication;
@@ -136,6 +138,7 @@ public class CartService {
         cart.getItems().clear();
     }
 
+
     /* =========================
        HELPER METHODS
     ========================== */
@@ -171,11 +174,23 @@ public class CartService {
             total = total.add(itemTotal);
 
             CartItemResponseDTO response = new CartItemResponseDTO();
+
+            Product product = item.getVariant().getProduct();
+
+            String primaryImageUrl = product.getImages().stream()
+                    .filter(ProductImage::isPrimary)
+                    .findFirst()
+                    .map(ProductImage::getImageUrl)
+                    .orElse(null);
+
+
+
             response.setCartItemId(item.getId());
             response.setProductName(item.getVariant().getProduct().getName());
             response.setSize(item.getVariant().getSize());
             response.setColor(item.getVariant().getProduct().getColour());
             response.setQuantity(item.getQuantity());
+            response.setImageUrl(primaryImageUrl);
             response.setPrice(item.getPriceAtAddition());
             response.setTotal(itemTotal);
 

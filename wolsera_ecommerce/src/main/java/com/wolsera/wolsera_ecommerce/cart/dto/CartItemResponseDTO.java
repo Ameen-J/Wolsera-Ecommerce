@@ -7,6 +7,7 @@ public class CartItemResponseDTO {
     private String productName;
     private String size;
     private String color;
+    private String imageUrl;
     private Integer quantity;
     private BigDecimal price;
     private BigDecimal total;
@@ -33,6 +34,8 @@ public class CartItemResponseDTO {
         return quantity;
     }
 
+    public String getImageUrl() { return imageUrl; }
+
     public BigDecimal getPrice() {
         return price;
     }
@@ -40,6 +43,7 @@ public class CartItemResponseDTO {
     public BigDecimal getTotal() {
         return total;
     }
+
 
     // ===== SETTERS =====
 
@@ -62,6 +66,8 @@ public class CartItemResponseDTO {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
+    public void setImageUrl(String imageUrl) {this.imageUrl = imageUrl;}
 
     public void setPrice(BigDecimal price) {
         this.price = price;

@@ -65,7 +65,7 @@ public class ProductController {
         return productService.searchProducts(request);
     }
 
-    @GetMapping("/category/tree")
+    @GetMapping("/categories/tree")
     public List<CategoryTreeDTO> getCategoryTree() {
         return categoryService.getCategoryTree();
     }

@@ -1,9 +1,12 @@
 package com.wolsera.wolsera_ecommerce.catalog.controller;
 
 import com.wolsera.wolsera_ecommerce.catalog.dto.*;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import com.wolsera.wolsera_ecommerce.catalog.service.AdminProductService;
 import com.wolsera.wolsera_ecommerce.catalog.service.CategoryService;
+import org.springframework.data.domain.Page;
 import java.util.List;
 
 @RestController
@@ -19,6 +22,17 @@ public class AdminProductController {
     }
 
     // ---------------- PRODUCT ----------------
+
+    @GetMapping
+    public Page<AdminProductListDTO> getAllProductsForAdmin(
+            @PageableDefault(size = 20, sort = "id") Pageable pageable) {
+        return adminProductService.getAllForAdmin(pageable);
+    }
+    @GetMapping("/{id}")
+    public ProductResponseDTO getProductById(@PathVariable Long id) {
+        return adminProductService.getProductForAdmin(id);
+    }
+
     @PostMapping("/create-product")
     public ProductResponseDTO createProduct(
             @RequestBody ProductRequestDTO dto
@@ -82,24 +96,24 @@ public class AdminProductController {
 
     // ---------------- CATEGORY ----------------
 
-    @GetMapping("/category/tree")
+    @GetMapping("/categories/tree")
     public List<CategoryTreeDTO> getCategoryTree() {
         return categoryService.getCategoryTree();
     }
 
-    @PostMapping("/category/create-category")
+    @PostMapping("/categories/create-category")
     public CategoryResponseDTO createNewCategory(
             @RequestBody CategoryRequestDTO dto
     ) {
         return categoryService.createCategory(dto);
     }
 
-    @DeleteMapping("/category/delete/{id}")
+    @DeleteMapping("/categories/delete/{id}")
     public void deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
     }
 
-    @PutMapping("/change-name/{id}")
+    @PutMapping("/categories/change-name/{id}")
     public CategoryResponseDTO updateCategoryName(
             @PathVariable Long id,
             @RequestParam String name

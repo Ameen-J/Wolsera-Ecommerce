@@ -27,6 +27,9 @@ public class OrderItem {
     private Integer quantity;
 
     @Column(nullable = false)
+    private String imageUrl;
+
+    @Column(nullable = false)
     private BigDecimal price; // unit price at time of order
 
     @Column(nullable = false)
@@ -35,7 +38,7 @@ public class OrderItem {
     // Constructors
     public OrderItem() {}
 
-    public OrderItem(String productName, String size, String color, Integer quantity, BigDecimal price) {
+    public OrderItem(String productName, String size, String color, Integer quantity, BigDecimal price, String imageUrl) {
         this.productName = productName;
         this.size = size;
         this.color = color;
@@ -74,6 +77,9 @@ public class OrderItem {
         this.quantity = quantity;
         calculateTotal();
     }
+
+    public  String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
     public BigDecimal getPrice() { return price; }
     public void setPrice(BigDecimal price) {

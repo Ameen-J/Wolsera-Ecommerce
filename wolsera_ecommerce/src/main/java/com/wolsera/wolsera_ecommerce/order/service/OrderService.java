@@ -2,6 +2,8 @@ package com.wolsera.wolsera_ecommerce.order.service;
 
 import com.wolsera.wolsera_ecommerce.cart.model.Cart;
 import com.wolsera.wolsera_ecommerce.cart.model.CartItem;
+import com.wolsera.wolsera_ecommerce.catalog.model.Product;
+import com.wolsera.wolsera_ecommerce.catalog.model.ProductImage;
 import com.wolsera.wolsera_ecommerce.catalog.model.ProductVariant;
 import com.wolsera.wolsera_ecommerce.cart.repository.CartRepository;
 import com.wolsera.wolsera_ecommerce.order.dto.OrderCreateRequestDTO;
@@ -140,12 +142,21 @@ public class OrderService {
         variantRepository.save(variant);
 
         // Create order item snapshot
+        Product product = variant.getProduct();
+
+        String primaryImageUrl = product.getImages().stream()
+                .filter(ProductImage::isPrimary)
+                .findFirst()
+                .map(ProductImage::getImageUrl)
+                .orElse(null);
+
         OrderItem item = new OrderItem();
         item.setProductName(variant.getProduct().getName());
         item.setSize(variant.getSize());
         item.setColor(variant.getProduct().getColour()); // if color is stored in product
         item.setQuantity(cartItem.getQuantity());
         item.setPrice(variant.getPrice());
+        item.setImageUrl(primaryImageUrl);
         item.calculateTotal();
 
         return item;

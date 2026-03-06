@@ -8,13 +8,14 @@ public class OrderItemResponseDTO {
     private String size;
     private String color;
     private Integer quantity;
+    private String imageUrl;
     private BigDecimal price;
     private BigDecimal total;
 
     // Constructors
     public OrderItemResponseDTO() {}
 
-    public OrderItemResponseDTO(Long id, String productName, String size, String color, Integer quantity, BigDecimal price, BigDecimal total) {
+    public OrderItemResponseDTO(Long id, String productName, String size, String color, Integer quantity, BigDecimal price, BigDecimal total, String imageUrl) {
         this.id = id;
         this.productName = productName;
         this.size = size;
@@ -22,6 +23,7 @@ public class OrderItemResponseDTO {
         this.quantity = quantity;
         this.price = price;
         this.total = total;
+        this.imageUrl = imageUrl;
     }
 
     // Getters & Setters
@@ -39,6 +41,9 @@ public class OrderItemResponseDTO {
 
     public Integer getQuantity() { return quantity; }
     public void setQuantity(Integer quantity) { this.quantity = quantity; }
+
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
     public BigDecimal getPrice() { return price; }
     public void setPrice(BigDecimal price) { this.price = price; }

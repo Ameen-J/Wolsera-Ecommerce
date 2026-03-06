@@ -36,6 +36,7 @@ public class ProductMapper {
         ProductImage image = new ProductImage();
         image.setImageUrl(dto.getImageUrl());
         image.setPrimary(dto.isPrimary());
+        image.setDisplayOrder(dto.getDisplayOrder());
         return image;
     }
 
@@ -100,6 +101,7 @@ public class ProductMapper {
         dto.setId(image.getId());
         dto.setImageUrl(image.getImageUrl());
         dto.setPrimary(image.isPrimary());
+        dto.setDisplayOrder(image.getDisplayOrder());
         return dto;
     }
 

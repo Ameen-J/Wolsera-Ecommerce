@@ -1,20 +1,17 @@
 package com.wolsera.wolsera_ecommerce.catalog.service;
 
+import com.wolsera.wolsera_ecommerce.catalog.dto.*;
 import com.wolsera.wolsera_ecommerce.catalog.model.Product;
 import com.wolsera.wolsera_ecommerce.catalog.model.ProductVariant;
 import com.wolsera.wolsera_ecommerce.catalog.model.ProductImage;
-import com.wolsera.wolsera_ecommerce.catalog.dto.ProductRequestDTO;
-import com.wolsera.wolsera_ecommerce.catalog.dto.ProductResponseDTO;
-import com.wolsera.wolsera_ecommerce.catalog.dto.ProductVariantResponseDTO;
-import com.wolsera.wolsera_ecommerce.catalog.dto.ProductVariantRequestDTO;
-import com.wolsera.wolsera_ecommerce.catalog.dto.ProductImageRequestDTO;
-import com.wolsera.wolsera_ecommerce.catalog.dto.ProductImageResponseDTO;
 import com.wolsera.wolsera_ecommerce.catalog.mapper.ProductMapper;
 import com.wolsera.wolsera_ecommerce.catalog.repository.ProductRepository;
 import com.wolsera.wolsera_ecommerce.catalog.repository.ProductVariantRepository;
 import com.wolsera.wolsera_ecommerce.catalog.repository.ProductImageRepository;
 
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +40,22 @@ public class AdminProductService {
     }
 
     // ================= PRODUCT =================
+
+    // ---------------- GET PRODUCTS ----------------
+
+    public Page<AdminProductListDTO> getAllForAdmin(Pageable pageable) {
+        return productRepository.findAllForAdmin(pageable);
+    }
+    @Transactional(readOnly = true)
+    public ProductResponseDTO getProductForAdmin(Long id) {
+
+        Product product = productRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Product not found"));
+
+        return ProductMapper.toResponse(product);
+    }
 
     // ---------------- CREATE PRODUCT ----------------
     @Transactional
@@ -159,8 +172,7 @@ public class AdminProductService {
                     "Product must have at least one variant"
             );
         }
-
-        variantRepository.delete(variant);
+        product.getVariants().remove(variant);
     }
 
     // ================= IMAGE =================
@@ -207,15 +219,19 @@ public class AdminProductService {
         ProductImage image = getImage(imageId);
         Product product = image.getProduct();
 
+        if(product.getImages().size() <= 1) {
+            throw new IllegalStateException(
+                    "Product must have at least one image"
+            );
+        }
         boolean wasPrimary = image.isPrimary();
-        imageRepository.delete(image);
+        product.getImages().remove(image);
 
         if (wasPrimary) {
             product.getImages().stream()
                     .findFirst()
                     .ifPresent(img -> {
                         img.setPrimary(true);
-                        imageRepository.save(img);
                     });
         }
     }

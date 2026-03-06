@@ -1,6 +1,7 @@
 package com.wolsera.wolsera_ecommerce.cart.controller;
 
-import com.wolsera.wolsera_ecommerce.auth.service.UserService;
+import com.wolsera.wolsera_ecommerce.auth.entity.User;
+import com.wolsera.wolsera_ecommerce.auth.repository.UserRepository;
 import com.wolsera.wolsera_ecommerce.cart.dto.AddToCartRequestDTO;
 import com.wolsera.wolsera_ecommerce.cart.dto.CartResponseDTO;
 import com.wolsera.wolsera_ecommerce.cart.service.CartService;
@@ -11,6 +12,7 @@ import com.wolsera.wolsera_ecommerce.order.dto.OrderResponseDTO;
 import com.wolsera.wolsera_ecommerce.order.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,12 +20,12 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
 
     private final CartService cartService;
-    private final UserService userService;
+    private final UserRepository userRepository;
     private final OrderService orderService;
 
-    public CartController(CartService cartService,UserService userService, OrderService orderService) {
+    public CartController(CartService cartService, UserRepository userRepository, OrderService orderService) {
         this.cartService = cartService;
-        this.userService = userService;
+        this.userRepository = userRepository;
         this.orderService = orderService;
     }
 
@@ -78,8 +80,12 @@ public class CartController {
     }
 
     @PostMapping("/checkout")
-    public ResponseEntity<OrderResponseDTO> checkout(@RequestBody OrderCreateRequestDTO requestDTO) {
-        OrderResponseDTO orderResponse = orderService.createOrderFromCart(requestDTO);
+    public ResponseEntity<OrderResponseDTO> checkout(Authentication authentication, @RequestBody OrderCreateRequestDTO request) {
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email).
+                orElseThrow(() -> new RuntimeException("User not found"));
+        request.setUserId(user.getId());
+        OrderResponseDTO orderResponse = orderService.createOrderFromCart(request);
         return new ResponseEntity<>(orderResponse, HttpStatus.CREATED);
     }
 }

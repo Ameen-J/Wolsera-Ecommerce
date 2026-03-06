@@ -19,7 +19,8 @@ public class OrderMapper {
                 item.getColor(),
                 item.getQuantity(),
                 item.getPrice(),
-                item.getTotal()
+                item.getTotal(),
+                item.getImageUrl()
         );
     }
 
