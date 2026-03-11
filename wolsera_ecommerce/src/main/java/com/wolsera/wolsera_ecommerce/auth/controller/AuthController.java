@@ -1,10 +1,9 @@
 package com.wolsera.wolsera_ecommerce.auth.controller;
 
-import com.wolsera.wolsera_ecommerce.auth.dto.AuthRequest;
-import com.wolsera.wolsera_ecommerce.auth.dto.AuthResponse;
-import com.wolsera.wolsera_ecommerce.auth.dto.RegisterRequest;
+import com.wolsera.wolsera_ecommerce.auth.dto.*;
 import com.wolsera.wolsera_ecommerce.auth.entity.User;
 import com.wolsera.wolsera_ecommerce.auth.security.JwtUtil;
+import com.wolsera.wolsera_ecommerce.auth.service.PasswordResetService;
 import com.wolsera.wolsera_ecommerce.auth.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,8 @@ public class AuthController {
     private UserService service;
     @Autowired
     private JwtUtil jwtUtil;
+    @Autowired
+    private PasswordResetService passwordResetService;
 
     @PostMapping("/signup")
     public String signup(@Valid @RequestBody RegisterRequest req) {
@@ -39,6 +40,21 @@ public class AuthController {
         service.validate(req.getEmail(), req.getPassword());
         String token = jwtUtil.generateToken(req.getEmail(), "USER");
         return new AuthResponse(token);
+    }
+
+    @PostMapping("/forgot-password")
+    public String forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        String token = passwordResetService.createResetToken(request.getEmail());
+        return "Password reset token: " + token;
+    }
+
+    @PostMapping("/reset-password")
+    public String resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        passwordResetService.resetPassword(
+                request.getToken(),
+                request.getNewPassword()
+        );
+        return "Password reset successful";
     }
 
 }
