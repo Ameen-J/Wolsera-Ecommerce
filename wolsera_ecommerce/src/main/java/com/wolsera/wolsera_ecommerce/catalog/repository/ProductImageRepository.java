@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ProductImageRepository extends JpaRepository<ProductImage, Long> {
 
-    List<ProductImage> findByProductOrderByDisplayOrderAsc(Product product);
+    List<ProductImage> findByProduct(Product product);
 
     boolean existsByProductAndIsPrimaryTrue(Product product);
 }

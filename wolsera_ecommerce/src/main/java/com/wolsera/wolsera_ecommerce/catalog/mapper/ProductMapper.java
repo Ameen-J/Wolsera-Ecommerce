@@ -3,6 +3,7 @@ package com.wolsera.wolsera_ecommerce.catalog.mapper;
 import com.wolsera.wolsera_ecommerce.catalog.dto.*;
 import com.wolsera.wolsera_ecommerce.catalog.model.*;
 
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.List;
 
@@ -36,7 +37,6 @@ public class ProductMapper {
         ProductImage image = new ProductImage();
         image.setImageUrl(dto.getImageUrl());
         image.setPrimary(dto.isPrimary());
-        image.setDisplayOrder(dto.getDisplayOrder());
         return image;
     }
 
@@ -80,6 +80,17 @@ public class ProductMapper {
                         .collect(Collectors.toList())
                         : null
         );
+        response.setAverageRating(product.getAverageRating());
+        response.setTotalRatings(product.getTotalRatings());
+
+        Map<Integer, Integer> distribution = Map.of(
+                5, product.getFiveStarCount(),
+                4, product.getFourStarCount(),
+                3, product.getThreeStarCount(),
+                2, product.getTwoStarCount(),
+                1, product.getOneStarCount()
+        );
+        response.setDistribution(distribution);
 
         return response;
     }
@@ -101,7 +112,6 @@ public class ProductMapper {
         dto.setId(image.getId());
         dto.setImageUrl(image.getImageUrl());
         dto.setPrimary(image.isPrimary());
-        dto.setDisplayOrder(image.getDisplayOrder());
         return dto;
     }
 
@@ -117,4 +127,5 @@ public class ProductMapper {
 
         return dto;
     }
+
 }

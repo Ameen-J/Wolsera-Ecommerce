@@ -5,7 +5,6 @@ public class ProductImageResponseDTO {
     private Long id;
     private String imageUrl;
     private boolean isPrimary;
-    private Integer displayOrder;
 
     public Long getId() {
         return id;
@@ -31,11 +30,4 @@ public class ProductImageResponseDTO {
         isPrimary = primary;
     }
 
-    public Integer getDisplayOrder() {
-        return displayOrder;
-    }
-
-    public void setDisplayOrder(Integer displayOrder) {
-        this.displayOrder = displayOrder;
-    }
 }

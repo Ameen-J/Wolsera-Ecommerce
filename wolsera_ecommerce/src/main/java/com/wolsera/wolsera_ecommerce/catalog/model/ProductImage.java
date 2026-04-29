@@ -18,16 +18,14 @@ public class ProductImage {
     @Column(nullable = false)
     private String imageUrl;
     private boolean isPrimary;
-    private Integer displayOrder;
 
     public ProductImage() {
     }
 
-    public ProductImage(Product product, String imageUrl, boolean isPrimary, Integer displayOrder) {
+    public ProductImage(Product product, String imageUrl, boolean isPrimary) {
         this.product = product;
         this.imageUrl = imageUrl;
         this.isPrimary = isPrimary;
-        this.displayOrder = displayOrder;
     }
 
     public Long getId() {
@@ -55,11 +53,4 @@ public class ProductImage {
         this.isPrimary = isPrimary;
     }
 
-    public Integer getDisplayOrder() {
-        return displayOrder;
-    }
-
-    public void setDisplayOrder(Integer displayOrder) {
-        this.displayOrder = displayOrder;
-    }
 }

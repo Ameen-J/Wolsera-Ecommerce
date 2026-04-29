@@ -76,7 +76,7 @@ public class CategoryService {
     @Transactional
     public CategoryResponseDTO createCategory(CategoryRequestDTO dto) {
 
-        String normalizedName = dto.getName().trim().toLowerCase();
+        String normalizedName = dto.getName();
 
         if (categoryRepository.findByName(normalizedName).isPresent()) {
             throw new RuntimeException("Category already exists");

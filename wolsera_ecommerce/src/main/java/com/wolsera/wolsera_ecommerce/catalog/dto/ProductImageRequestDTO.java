@@ -4,7 +4,6 @@ public class ProductImageRequestDTO {
 
     private String imageUrl;
     private boolean isPrimary;
-    private Integer displayOrder;
 
     public String getImageUrl() {
         return imageUrl;
@@ -22,12 +21,5 @@ public class ProductImageRequestDTO {
         isPrimary = primary;
     }
 
-    public Integer getDisplayOrder() {
-        return displayOrder;
-    }
-
-    public void setDisplayOrder(Integer displayOrder) {
-        this.displayOrder = displayOrder;
-    }
 }
 
