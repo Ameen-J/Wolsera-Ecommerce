@@ -197,19 +197,14 @@ public class AdminProductService {
     }
 
     public ProductImageResponseDTO updateImage(
-            Long imageId,
-            ProductImageRequestDTO dto
+            Long imageId
     ) {
         ProductImage image = getImage(imageId);
 
-        image.setImageUrl(dto.getImageUrl());
-        image.setDisplayOrder(dto.getDisplayOrder());
-
-        if (dto.isPrimary()) {
+        if (!image.isPrimary()) {
             unsetPrimaryImage(image.getProduct());
             image.setPrimary(true);
         }
-
         return ProductMapper.toImageResponse(
                 imageRepository.save(image)
         );

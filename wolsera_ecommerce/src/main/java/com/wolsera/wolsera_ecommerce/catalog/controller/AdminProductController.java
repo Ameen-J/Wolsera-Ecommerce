@@ -3,9 +3,11 @@ package com.wolsera.wolsera_ecommerce.catalog.controller;
 import com.wolsera.wolsera_ecommerce.catalog.dto.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.wolsera.wolsera_ecommerce.catalog.service.AdminProductService;
 import com.wolsera.wolsera_ecommerce.catalog.service.CategoryService;
+import com.wolsera.wolsera_ecommerce.catalog.service.SliderService;
 import org.springframework.data.domain.Page;
 import java.util.List;
 
@@ -15,10 +17,12 @@ public class AdminProductController {
 
     private final AdminProductService adminProductService;
     private final CategoryService categoryService;
+    private final SliderService sliderService;
 
-    public AdminProductController(AdminProductService adminProductService,CategoryService categoryService) {
+    public AdminProductController(AdminProductService adminProductService,CategoryService categoryService,SliderService sliderService) {
         this.adminProductService = adminProductService;
         this.categoryService = categoryService;
+        this.sliderService = sliderService;
     }
 
     // ---------------- PRODUCT ----------------
@@ -89,6 +93,13 @@ public class AdminProductController {
         return adminProductService.addImage(productId, dto);
     }
 
+    @PatchMapping("/images/{imageId}/set-primary")
+    public ProductImageResponseDTO setPrimaryImage(
+            @PathVariable Long imageId
+    ){
+        return adminProductService.updateImage(imageId);
+    }
+
     @DeleteMapping("/images/{imageId}")
     public void deleteImage(@PathVariable Long imageId) {
         adminProductService.deleteImage(imageId);
@@ -121,5 +132,9 @@ public class AdminProductController {
         return categoryService.updateCategoryName(id, name);
     }
 
+    @PostMapping("/slider/create-slider")
+    public ResponseEntity<SliderResponseDTO> createSlider(@RequestBody SliderRequestDTO dto) {
+        return ResponseEntity.ok(sliderService.createSlider(dto));
+    }
 }
 
