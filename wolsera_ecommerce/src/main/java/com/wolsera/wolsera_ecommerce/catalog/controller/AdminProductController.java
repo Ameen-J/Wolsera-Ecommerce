@@ -132,9 +132,23 @@ public class AdminProductController {
         return categoryService.updateCategoryName(id, name);
     }
 
-    @PostMapping("/slider/create-slider")
+    @PostMapping("/slider/create")
     public ResponseEntity<SliderResponseDTO> createSlider(@RequestBody SliderRequestDTO dto) {
         return ResponseEntity.ok(sliderService.createSlider(dto));
+    }
+
+    @PutMapping("/slider/update/{id}")
+    public ResponseEntity<SliderResponseDTO> updateSlider(
+            @PathVariable Long id,
+            @RequestBody SliderRequestDTO dto
+    ) {
+        return ResponseEntity.ok(sliderService.updateSlider(id, dto));
+    }
+
+    @DeleteMapping("/slider/delete/{id}")
+    public ResponseEntity<String> deleteSlider(@PathVariable Long id) {
+        sliderService.deleteSlider(id);
+        return ResponseEntity.ok("Slider deleted successfully");
     }
 }
 
