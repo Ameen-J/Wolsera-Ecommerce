@@ -151,7 +151,8 @@ public class OrderService {
                 .orElse(null);
 
         OrderItem item = new OrderItem();
-        item.setProductName(variant.getProduct().getName());
+        item.setProduct(product);
+        item.setProductName(product.getName());
         item.setSize(variant.getSize());
         item.setColor(variant.getProduct().getColour()); // if color is stored in product
         item.setQuantity(cartItem.getQuantity());

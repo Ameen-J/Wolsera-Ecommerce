@@ -19,6 +19,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     SELECT new com.wolsera.wolsera_ecommerce.catalog.dto.ProductListDTO(
         p.id,
         p.name,
+        p.colour,
+        p.gender,
         (
             SELECT i.imageUrl
             FROM ProductImage i
@@ -29,10 +31,18 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             SELECT MIN(v.price)
             FROM ProductVariant v
             WHERE v.product = p
-        )
+        ),
+        leaf.name,
+        p.averageRating,
+        p.totalRating
     )
     FROM Product p
+    LEFT JOIN p.categories leaf
     WHERE p.isActive = true
+    AND NOT EXISTS (
+        SELECT 1 FROM Category c2
+        WHERE c2.parent = leaf
+    )
     """)
     Page<ProductListDTO> findAllActiveProducts(Pageable pageable);
 
@@ -44,11 +54,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     })*/
     Optional<Product> findByIdAndIsActiveTrue(Long id);
 
-
+    /*
     @Query("""
     SELECT new com.wolsera.wolsera_ecommerce.catalog.dto.ProductListDTO(
         p.id,
         p.name,
+        p.colour,
+        p.gender,
         (
             SELECT i.imageUrl
             FROM ProductImage i
@@ -59,6 +71,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             SELECT MIN(v.price)
             FROM ProductVariant v
             WHERE v.product = p
+        ),
+        (
+            SELECT c.name
+            FROM Category c
+            WHERE c MEMBER OF p.categories
+            AND c.children IS EMPTY
         )
     )
     FROM Product p
@@ -70,11 +88,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             @Param("categoryId") Long categoryId,
             Pageable pageable
     );
-
+    */
     @Query("""
     SELECT DISTINCT new com.wolsera.wolsera_ecommerce.catalog.dto.ProductListDTO(
         p.id,
         p.name,
+        p.colour,
+        p.gender,
         (
             SELECT img.imageUrl
             FROM ProductImage img
@@ -85,11 +105,19 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             SELECT MIN(v.price)
             FROM ProductVariant v
             WHERE v.product = p
-        )
+        ),
+        leaf.name,
+        p.averageRating,
+        p.totalRating
     )
     FROM Product p
     LEFT JOIN p.categories c
+    LEFT JOIN p.categories leaf
     WHERE p.isActive = true
+    AND NOT EXISTS (
+        SELECT 1 FROM Category c2
+        WHERE c2.parent = leaf
+    )
     AND (:categoryId IS NULL OR c.id = :categoryId)
     AND (
         :search IS NULL OR

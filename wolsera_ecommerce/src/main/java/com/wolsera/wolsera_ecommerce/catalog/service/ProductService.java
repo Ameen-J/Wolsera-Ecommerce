@@ -48,7 +48,7 @@ public class ProductService {
 
         return ProductMapper.toResponse(product);
     }
-
+    /*
     @Transactional(readOnly = true)
     public Page<ProductListDTO> getProductsByCategory(
             Long categoryId,
@@ -64,7 +64,7 @@ public class ProductService {
                         pageable
                 );
     }
-
+    */
     public Page<ProductListDTO> searchProducts(ProductSearchRequestDTO request) {
 
         Pageable pageable = PageRequest.of(

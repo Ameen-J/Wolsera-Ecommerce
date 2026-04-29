@@ -35,7 +35,13 @@ public class Product {
     private Set <ProductImage> images;
 
     private boolean isActive = true;
-
+    private Double averageRating;
+    private Integer totalRatings;
+    private Integer fiveStarCount = 0;
+    private Integer fourStarCount = 0;
+    private Integer threeStarCount = 0;
+    private Integer twoStarCount = 0;
+    private Integer oneStarCount = 0;
     private LocalDateTime createdAt;
 
     @PrePersist
@@ -71,5 +77,26 @@ public class Product {
 
     public boolean isActive() { return isActive; }
     public void setActive(boolean active) { isActive = active; }
+
+    public Double getAverageRating() { return averageRating; }
+    public void setAverageRating(Double averageRating) { this.averageRating = averageRating; }
+
+    public Integer getTotalRatings() { return totalRatings; }
+    public  void setTotalRatings(Integer totalRatings) { this.totalRatings = totalRatings; }
+
+    public Integer getFiveStarCount() { return fiveStarCount; }
+    public void setFiveStarCount(Integer fiveStarCount) { this.fiveStarCount = fiveStarCount; }
+
+    public Integer getFourStarCount() { return fourStarCount; }
+    public void setFourStarCount(Integer fourStarCount) { this.fourStarCount = fourStarCount; }
+
+    public Integer getThreeStarCount() { return threeStarCount; }
+    public void setThreeStarCount(Integer threeStarCount) { this.threeStarCount = threeStarCount; }
+
+    public Integer getTwoStarCount() { return twoStarCount; }
+    public void setTwoStarCount(Integer twoStarCount) { this.twoStarCount = twoStarCount; }
+
+    public Integer getOneStarCount() { return oneStarCount; }
+    public void setOneStarCount(Integer oneStarCount) { this.oneStarCount = oneStarCount; }
 
 }

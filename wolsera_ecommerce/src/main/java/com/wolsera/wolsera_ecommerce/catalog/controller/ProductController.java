@@ -1,16 +1,21 @@
 package com.wolsera.wolsera_ecommerce.catalog.controller;
 
-import com.wolsera.wolsera_ecommerce.catalog.dto.CategoryTreeDTO;
-import com.wolsera.wolsera_ecommerce.catalog.dto.ProductListDTO;
-import com.wolsera.wolsera_ecommerce.catalog.dto.ProductResponseDTO;
+import com.wolsera.wolsera_ecommerce.catalog.dto.*;
+import com.wolsera.wolsera_ecommerce.catalog.model.Rating;
+import com.wolsera.wolsera_ecommerce.auth.entity.User;
+import com.wolsera.wolsera_ecommerce.catalog.repository.RatingRepository;
 import com.wolsera.wolsera_ecommerce.catalog.service.ProductService;
-import com.wolsera.wolsera_ecommerce.catalog.dto.ProductSearchRequestDTO;
 import com.wolsera.wolsera_ecommerce.catalog.service.CategoryService;
+import com.wolsera.wolsera_ecommerce.catalog.service.RatingService;
+import com.wolsera.wolsera_ecommerce.catalog.service.SliderService;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/products")
@@ -18,10 +23,17 @@ public class ProductController {
 
     private final ProductService productService;
     private final CategoryService categoryService;
+    private final RatingService ratingService;
+    private final SliderService sliderService;
+    private final RatingRepository ratingRepository;
 
-    public ProductController(ProductService productService, CategoryService categoryService) {
+    public ProductController(ProductService productService, CategoryService categoryService,RatingService ratingService,
+                             SliderService sliderService, RatingRepository ratingRepository) {
         this.productService = productService;
         this.categoryService = categoryService;
+        this.ratingService = ratingService;
+        this.ratingRepository = ratingRepository;
+        this.sliderService = sliderService;
     }
 
     // ----------------------------------
@@ -69,4 +81,29 @@ public class ProductController {
     public List<CategoryTreeDTO> getCategoryTree() {
         return categoryService.getCategoryTree();
     }
+
+    @PostMapping("/ratings")
+    public ResponseEntity<String> rateProduct(@RequestBody RatingRequestDTO request,
+                                              @AuthenticationPrincipal User user) {
+
+        ratingService.rateProduct(user.getId(), request.getProductId(), request.getRating());
+
+        return ResponseEntity.ok("Rating submitted successfully");
+    }
+
+    @GetMapping("/ratings/my/{productId}")
+    public ResponseEntity<Integer> getMyRating(@PathVariable Long productId,
+                                               @AuthenticationPrincipal User user) {
+
+        Optional<Rating> rating =
+                ratingRepository.findByUserIdAndProductId(user.getId(), productId);
+
+        return ResponseEntity.ok(rating.map(Rating::getRating).orElse(0));
+    }
+
+    @GetMapping("/sliders")
+    public ResponseEntity<List<SliderResponseDTO>> getSliders() {
+        return ResponseEntity.ok(sliderService.getSliders());
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.wolsera.wolsera_ecommerce.catalog.dto;
 
 import java.util.List;
+import java.util.Map;
 
 public class ProductResponseDTO {
 
@@ -12,6 +13,9 @@ public class ProductResponseDTO {
     private List<String> categories; // Just the category name
     private List<ProductVariantResponseDTO> variants;
     private List<ProductImageResponseDTO> images;
+    private Double averageRating;
+    private Integer totalRatings;
+    private Map<Integer, Integer> distribution;
     private boolean isActive;
 
     // Getters and setters
@@ -41,4 +45,13 @@ public class ProductResponseDTO {
 
     public boolean isActive() { return isActive; }
     public void setActive(boolean isActive) { this.isActive = isActive; }
+
+    public Double getAverageRating() { return averageRating; }
+    public void setAverageRating(Double averageRating) { this.averageRating = averageRating; }
+
+    public Integer getTotalRatings() { return totalRatings; }
+    public void setTotalRatings(Integer totalRatings) { this.totalRatings = totalRatings; }
+
+    public Map<Integer, Integer> getDistribution() { return distribution; }
+    public void setDistribution(Map<Integer, Integer> distribution) { this.distribution = distribution; }
 }
