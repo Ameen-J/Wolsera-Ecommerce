@@ -25,8 +25,8 @@ public class ProductListDTO {
         this.colour = colour;
         this.gender = gender;
         this.categoryName = categoryName;
-        this.averageRating = averageRating;
-        this.totalRatings = totalRatings;
+        this.averageRating = averageRating != null ? averageRating : 0.0;
+        this.totalRatings = totalRatings != null ? totalRatings : 0;
     }
 
     public Long getId() {

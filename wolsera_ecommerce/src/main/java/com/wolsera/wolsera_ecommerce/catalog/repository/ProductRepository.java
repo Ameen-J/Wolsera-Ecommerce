@@ -33,8 +33,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             WHERE v.product = p
         ),
         leaf.name,
-        p.averageRating,
-        p.totalRating
+        COALESCE(p.averageRating, 0),
+        COALESCE(p.totalRatings, 0)
     )
     FROM Product p
     LEFT JOIN p.categories leaf
@@ -107,8 +107,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             WHERE v.product = p
         ),
         leaf.name,
-        p.averageRating,
-        p.totalRating
+        COALESCE(p.averageRating, 0),
+        COALESCE(p.totalRatings, 0)
     )
     FROM Product p
     LEFT JOIN p.categories c
